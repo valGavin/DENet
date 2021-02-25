@@ -262,11 +262,10 @@ class DELayer(Layer):
       hidd_layer = keras.models.Sequential()
       hidd_layer.add(keras.layers.Conv1D(30, kernel_size=7, activation='relu',strides=2, data_format="channels_last"))
       hidd_layer.add(keras.layers.Conv1D(30, kernel_size=7, activation='relu',strides=3, data_format="channels_last"))
-      hidd_layer.add(keras.layers.Conv1D(10, kernel_size=7, activation='relu',strides=3, data_format="channels_last"))
+      hidd_layer.add(keras.layers.Conv1D(10, kernel_size=2, activation='relu',strides=3, data_format="channels_last"))
       hidd_layer.add(keras.layers.Flatten())
       hidd_layer.add(keras.layers.Dense(128, activation='relu', use_bias=True, kernel_initializer="glorot_uniform", bias_initializer="zeros"))
       hidd_layer.add(keras.layers.Dense(64, activation='relu', use_bias=True, kernel_initializer="glorot_uniform", bias_initializer="zeros"))
       hidd_layer.add(keras.layers.Dense(1, use_bias=True, kernel_initializer="glorot_uniform", bias_initializer="zeros"))
       
       return hidd_layer
-        

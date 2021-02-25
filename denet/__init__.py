@@ -14,7 +14,8 @@ def get_denet(input_shape, n_classes, sr=16000, before_pooling=True, dropout=0.3
     inp = Input(input_shape)
 
     # SincNet Layer
-    x = TimeDistributed(SincConv1D(80, 251, sr))(inp)
+    # x = TimeDistributed(SincConv1D(80, 251, sr))(inp)
+    x = TimeDistributed(Conv1D(filters=80, kernel_size=2))(inp)
 
     attention_layer = DELayer(sum_channels=True, dropout=dropout)
 
@@ -22,7 +23,7 @@ def get_denet(input_shape, n_classes, sr=16000, before_pooling=True, dropout=0.3
     if before_pooling:
         x = TimeDistributed(attention_layer)(x)
 
-    x = TimeDistributed(MaxPooling1D(pool_size=3))(x)
+    x = TimeDistributed(MaxPooling1D(pool_size=1))(x)
     x = TimeDistributed(LeakyReLU())(x)
     if dropout != 0:
         x = TimeDistributed(SpatialDropout1D(dropout))(x)
@@ -73,6 +74,7 @@ def get_denet(input_shape, n_classes, sr=16000, before_pooling=True, dropout=0.3
         x = TimeDistributed(Dropout(dropout))(x)
 
     # classes
-    x = TimeDistributed(Dense(n_classes, activation='softmax'))(x)
+    x = Flatten()(x)
+    x = Dense(n_classes, activation='softmax')(x)
 
     return Model(inputs=inp, outputs=x)
